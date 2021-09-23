@@ -1,25 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import {Admin, Resource} from 'react-admin'
+import { WorkassignmentList } from './components/WorkassignmentList'
+import { WorkassignmentEdit } from './components/WorkassignmentEdit'
+import { authProvider } from './providers/authProvider'
+import { dataProvider } from './providers/dataProvider'
+import { i18nProvider } from './providers/i18nProvider'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
 
-export default App;
+const App = () => (
+    <Admin
+      authProvider={authProvider('http://cbdevelop.local')}
+      dataProvider={dataProvider('http://cbdevelop.local')}
+      i18nProvider={i18nProvider}
+    >
+      <Resource
+        name="WorkAssignment"
+        list={WorkassignmentList}
+        edit={WorkassignmentEdit}
+      />
+      <Resource name="Users" />
+      <Resource name="Contacts"></Resource>
+      <Resource name="Accounts"></Resource>
+      <Resource name="SalesOrder"></Resource>
+    </Admin>
+)
+
+export default App
