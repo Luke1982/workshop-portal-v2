@@ -67,11 +67,19 @@ const doGetMany = async (ids, modName, sessionId, url) => {
 }
 
 const doRetrieve = async (id, sessionId, url) => {
-	// const q = `SELECT * FROM ${modName.toLowerCase()} WHERE id = ${id})`
-	// const result = await doQuery(q, sessionId, url)
-	// return result.result
 	const response = await fetch(`${url}/webservice.php?operation=retrieve&id=${id}&sessionName=${sessionId}`)
 	return await response.json()
+}
+
+const doRevise = async (id, fields, sessionId, url) => {
+	const response = await fetch(`${url}/webservice.php
+		?operation=revise
+		&sessionName=${sessionId}
+		&element=${{
+			id,
+			...fields
+		}}`
+	)
 }
 
 export {
@@ -80,5 +88,6 @@ export {
 	doGetList,
 	doDescribe,
 	doGetMany,
-	doRetrieve
+	doRetrieve,
+	doRevise
 }
