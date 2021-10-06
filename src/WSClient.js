@@ -53,9 +53,9 @@ const doDescribe = async (moduleName, sessionId, url) => {
 	return result.result
 }
 
-const doGetList = async (describeObj, modName, offSet, perPage, url, sessionId) => {
+const doGetList = async (describeObj, modName, offSet, perPage, url, sessionId, sorting) => {
 	const fields = [...describeObj.fields].map(field => field.name)
-	const q = `SELECT ${fields.join(',')} FROM ${modName.toLowerCase()} LIMIT ${offSet}, ${perPage}`
+	const q = `SELECT ${fields.join(',')} FROM ${modName.toLowerCase()} ORDER BY ${sorting.field} ${sorting.order} LIMIT ${offSet}, ${perPage}`
 	const result = await doQuery(q, sessionId, url)
 	return result.result
 }

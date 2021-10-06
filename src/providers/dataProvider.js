@@ -21,7 +21,8 @@ const dataProvider = (url) => {
                     offSet,
                     pagination.perPage,
                     url,
-                    this.authProvider.getSessionId()
+                    this.authProvider.getSessionId(),
+                    sort
                 )
                 return Promise.resolve({data: records, total: records.length})
             } catch (e) {
