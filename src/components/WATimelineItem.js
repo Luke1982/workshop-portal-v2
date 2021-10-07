@@ -1,9 +1,10 @@
 import React, {useState, useEffect} from 'react'
-import { useDataProvider } from 'ra-core'
+import { useDataProvider, useNotify } from 'ra-core'
 import { Link } from 'react-router-dom'
 
 const WATimelineItem = ({ item }) => {
 	const dataProvider = useDataProvider()
+	const notify = useNotify()
 	const [account, setAccount] = useState({
 		accountname: 'Laden'
 	})
@@ -48,10 +49,15 @@ const WATimelineItem = ({ item }) => {
 	}, [dataProvider, item.account_id, item.salesorder])
 
 	const cancelWorkAssignment = async id => {
-		const result = await dataProvider.update(
-			'WorkAssignment',
-			Object.assign({},item, { 'wastatus': 'Preparation cancelled' })
-		)
+		try {
+			await dataProvider.update(
+				'WorkAssignment',
+				Object.assign({},item, { 'wastatus': 'Preparation cancelled' })
+			)
+			notify(`Preparation successfully cancelled`, 'success');
+		} catch (e) {
+			notify(e, 'warning')
+		}
 	}
 
 	return (

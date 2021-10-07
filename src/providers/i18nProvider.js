@@ -9,6 +9,7 @@ const customMessages = {
 	'resources.WorkAssignment.fields.enddate': 'Eindigt op',
 	'resources.WorkAssignment.fields.account_id': 'Klant',
 	'resources.WorkAssignment.fields.wastatus': 'Werkplaats status',
+	'Preparation successfully cancelled': 'Voorbereiding van de werkbon geannuleerd'
 }
 
 const stockProvider = polyglotI18nProvider(locale => dutchMessages)
