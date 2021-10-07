@@ -47,8 +47,11 @@ const WATimelineItem = ({ item }) => {
 		getSalesOrder()
 	}, [dataProvider, item.account_id, item.salesorder])
 
-	const cancelWorkAssignment = () => {
-		// To do
+	const cancelWorkAssignment = async id => {
+		const result = await dataProvider.update(
+			'WorkAssignment',
+			Object.assign({},item, { 'wastatus': 'Preparation cancelled' })
+		)
 	}
 
 	return (
@@ -107,7 +110,7 @@ const WATimelineItem = ({ item }) => {
 							</ul>
 							<div className="slds-clearfix">
 								<div className="slds-button-group slds-float_right slds-m-top_small">
-									<button className="slds-button slds-button_destructive" onClick={cancelWorkAssignment}>
+									<button className="slds-button slds-button_destructive" onClick={() => cancelWorkAssignment(item.id)}>
 										<svg className="slds-button__icon slds-button__icon_left" aria-hidden="true">
 											<use xlinkHref="/icons/standard-sprite/svg/symbols.svg#date_input"></use>
 										</svg>

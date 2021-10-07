@@ -71,15 +71,30 @@ const doRetrieve = async (id, sessionId, url) => {
 	return await response.json()
 }
 
-const doRevise = async (id, fields, sessionId, url) => {
-	const response = await fetch(`${url}/webservice.php
-		?operation=revise
-		&sessionName=${sessionId}
-		&element=${{
-			id,
-			...fields
-		}}`
+const doRevise = async (record, sessionId, url) => {
+	const response = await fetch(`
+			${url}/webservice.php
+			?operation=revise
+			&sessionName=${sessionId}
+		`,
+		{
+			method: 'POST',
+			headers: {
+				"Content-type": 'application/x-www-form-urlencoded'
+			},
+			body: 'element=' + JSON.stringify(record)
+		}
 	)
+	try {
+		const result = await response.json()
+		if (result.success === true) {
+			return Promise.resolve(result.result)
+		} else {
+			return Promise.reject(result.error.code)
+		}
+	} catch(e) {
+		return Promise.reject('Kon niet updaten')
+	}
 }
 
 export {
