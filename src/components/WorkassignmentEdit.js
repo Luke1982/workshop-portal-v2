@@ -17,7 +17,6 @@ const WorkassignmentEdit = props => {
 			<FormWithRedirect
 			{...props}
 			render={formProps => {
-				console.log(formProps.record)
 				return (
 					<WorkAssignmentContent record={formProps.record} />
 				)
