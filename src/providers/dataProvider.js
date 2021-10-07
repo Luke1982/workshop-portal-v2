@@ -4,7 +4,8 @@ import {
     doDescribe,
     doGetMany,
     doRetrieve,
-    doRevise
+    doRevise,
+    doGetRelated
 } from '../WSClient'
 import { authProvider } from './authProvider'
 
@@ -43,9 +44,21 @@ const dataProvider = (url) => {
                 {data: records}
             )
         },
-        getManyReference: (resource, params) => {
-            console.log('getManyReference', resource, params)
-            return Promise.resolve()
+        getManyReference: async (resource, params) => {
+            try {
+                const result = await doGetRelated(
+                    resource,
+                    params,
+                    localStorage.getItem('cbsession'),
+                    url
+                )
+                return Promise.resolve({
+                    data: result.result,
+                    total: result.result.length
+                })
+            } catch (e) {
+                return Promise.reject(e)
+            }
         },
         create: (resource, params) => Promise,
         update: async (resource, params) => {
