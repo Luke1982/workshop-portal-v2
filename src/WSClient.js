@@ -97,6 +97,13 @@ const doRevise = async (record, sessionId, url) => {
 	}
 }
 
+const doGetRelated = async (relatedModName, params, sessionId, url) => {
+	const query = `SELECT * FROM ${relatedModName} 
+		WHERE ${params.target} = ${params.id} 
+		ORDER BY ${params.sort.field} ${params.sort.order}`
+	return await doQuery(query, sessionId, url)
+}
+
 export {
 	doLogin,
 	doLogout,
@@ -104,5 +111,6 @@ export {
 	doDescribe,
 	doGetMany,
 	doRetrieve,
-	doRevise
+	doRevise,
+	doGetRelated
 }
