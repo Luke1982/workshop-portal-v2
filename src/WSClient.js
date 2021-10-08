@@ -104,6 +104,10 @@ const doGetRelated = async (relatedModName, params, sessionId, url) => {
 	return await doQuery(query, sessionId, url)
 }
 
+const doCreate = async (modName, record, sessionId, url) => {
+	return await doCreateOrRevise('create', modName, record, sessionId, url)
+}
+
 const doCreateOrRevise = async (type, modName, record, sessionId, url) => {
 	const response = await fetch(`
 			${url}/webservice.php
@@ -140,5 +144,6 @@ export {
 	doGetMany,
 	doRetrieve,
 	doRevise,
-	doGetRelated
+	doGetRelated,
+	doCreate
 }
