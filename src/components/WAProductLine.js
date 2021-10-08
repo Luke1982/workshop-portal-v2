@@ -5,7 +5,6 @@ import { useDataProvider, useNotify } from 'ra-core'
 const WAProductLine = ({record, products, account}) => {
 	const dataProvider = useDataProvider()
 	const notify = useNotify()
-	const now = new Date()
 	const [productsLoaded, setProductsLoaded] = useState(false)
 	const [product, setProduct] = useState({
 		productname: 'Laden...',
