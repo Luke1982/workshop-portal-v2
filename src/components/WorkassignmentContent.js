@@ -4,6 +4,7 @@ import WAProductLine from './WAProductLine'
 import { useDataProvider } from 'ra-core'
 
 const WorkAssignmentContent = ({record}) => {
+	console.log(record)
 	const dataProvider = useDataProvider()
 	const topbarRef = useRef()
 	const [lines, setLines] = useState(false)
@@ -47,17 +48,17 @@ const WorkAssignmentContent = ({record}) => {
 			const collectedProductIds = []
 			const renderedLines = lines.map(line => {
 				collectedProductIds.push(line.product)
-				return <WAProductLine record={line} key={line.id} products={products} />
+				return <WAProductLine record={line} key={line.id} products={products} account={record.account_id} />
 			})
 			setProductIds(collectedProductIds)
 			setRenderedLines(renderedLines)
 		} else if (productsLoaded === true) {
 			const renderedLines = lines.map(line => {
-				return <WAProductLine record={line} key={line.id} products={products} />
+				return <WAProductLine record={line} key={line.id} products={products} account={record.account_id} />
 			})
 			setRenderedLines(renderedLines)
 		}
-	}, [lines, products, productsLoaded])
+	}, [lines, products, productsLoaded, record.account_id])
 
 	useEffect(() => {
 		if (!!productIds) {

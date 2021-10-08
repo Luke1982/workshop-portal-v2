@@ -2,7 +2,7 @@ import React from 'react'
 import { useEffect, useState } from 'react'
 import { useDataProvider, useNotify } from 'ra-core'
 
-const WAProductLine = ({record, products}) => {
+const WAProductLine = ({record, products, account}) => {
 	const dataProvider = useDataProvider()
 	const notify = useNotify()
 	const [productsLoaded, setProductsLoaded] = useState(false)
@@ -49,7 +49,7 @@ const WAProductLine = ({record, products}) => {
 		}
 		button.disabled = true
 		const record = {
-			// TO-DO: set account
+			account,
 			serialnumber,
 			assetname: 'Tijdelijke naam',
 			product: product.id,
