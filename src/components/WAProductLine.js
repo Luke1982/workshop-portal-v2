@@ -5,6 +5,7 @@ import { useDataProvider, useNotify } from 'ra-core'
 const WAProductLine = ({record, products, account}) => {
 	const dataProvider = useDataProvider()
 	const notify = useNotify()
+	const now = new Date()
 	const [productsLoaded, setProductsLoaded] = useState(false)
 	const [product, setProduct] = useState({
 		productname: 'Laden...',
@@ -42,9 +43,14 @@ const WAProductLine = ({record, products, account}) => {
 		const button = event.target
 		const column = button.parentElement.parentElement
 		const snInput = column.getElementsByTagName('input')[0]
+		const byInput = column.getElementsByTagName('input')[0]
 		const serialnumber = snInput.value
 		if (serialnumber === '') {
 			notify('msg.no_empty_serial', 'warning')
+			return
+		}
+		if (!/^[0-9]{4}$/.test(byInput.value) || byInput.value === '') {
+			notify('msg.buildyear_wrong', 'warning')
 			return
 		}
 		button.disabled = true
@@ -54,9 +60,9 @@ const WAProductLine = ({record, products, account}) => {
 			assetname: 'Tijdelijke naam',
 			product: product.id,
 			dateinservice: '01-01-1900',
-			assigned_user_id: '19x6', // TO-DO: set global current user
+			assigned_user_id: localStorage.getItem('cbuserid'),
 			assetstatus: 'In Gebruik',
-			cf_903: '2021', // TO-DO: create input for this
+			cf_903: byInput.value
 		}
 		await dataProvider.create('Assets', record)
 		snInput.disabled = true
@@ -101,10 +107,26 @@ const WAProductLine = ({record, products, account}) => {
 				</div>
 				<div className="slds-col slds-size_4-of-12 slds-grid">
 					<div className="slds-form-element slds-size_8-of-12">
-						<label className="slds-form-element__label" for={`serial-${record.id}`}>Serienummer</label>
-						<div className="slds-form-element__control">
-							{/* TO-DO: check if there isn't already an asset/serial for this input and disable if so */}
-							<input type="text" id={`serial-${record.id}`} placeholder="Voer het serienummer in" className="slds-input" />
+						<div className="slds-grid">
+							<div className="slds-col slds-size_8-of-12">
+								<label className="slds-form-element__label" for={`serial-${record.id}`}>Serienummer</label>
+								<div className="slds-form-element__control">
+									{/* TO-DO: check if there isn't already an asset/serial for this input and disable if so */}
+									<input type="text" id={`serial-${record.id}`} placeholder="Voer het serienummer in" className="slds-input" />
+								</div>
+							</div>
+							<div className="slds-col slds-size_4-of-12 slds-m-left_xx-small">
+								<label className="slds-form-element__label" for={`buildyear-${record.id}`}>Bouwjaar</label>
+								<div className="slds-form-element__control">
+									{/* TO-DO: check if there isn't already an asset/serial for this input and disable if so */}
+									<input
+										type="text"
+										id={`buildyear-${record.id}`}
+										placeholder="Voer het bouwjaar in"
+										className="slds-input"
+									/>
+								</div>
+							</div>
 						</div>
 					</div>
 					<div className="slds-size_4-of-12">

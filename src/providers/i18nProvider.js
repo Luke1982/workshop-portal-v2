@@ -11,7 +11,8 @@ const customMessages = {
 	'resources.WorkAssignment.fields.wastatus': 'Werkplaats status',
 	'Preparation successfully cancelled': 'Voorbereiding van de werkbon geannuleerd',
 	'msg.no_empty_serial': 'Serienummer kan niet leeg zijn',
-	'msg.serial_saved': 'Serienummer opgeslagen'
+	'msg.serial_saved': 'Serienummer opgeslagen',
+	'msg.buildyear_wrong': 'Bouwjaar verkeerd ingevoerd'
 }
 
 const stockProvider = polyglotI18nProvider(locale => dutchMessages)
