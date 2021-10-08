@@ -139,6 +139,22 @@ const doCreateOrRevise = async (type, modName, record, sessionId, url) => {
 	}
 }
 
+const doRelate = async (sourceId, targetIds, sessionId, url) => {
+	const response = await fetch(`
+			${url}/webservice.php
+			?operation=SetRelation
+			&sessionName=${sessionId}
+		`,{
+			method: 'POST',
+			headers: {
+				"Content-type": 'application/x-www-form-urlencoded'
+			},
+			body: 'relate_this_id=' + sourceId + '&with_these_ids=' + JSON.stringify(targetIds)
+		}
+	)
+	return response
+}
+
 export {
 	doLogin,
 	doLogout,
@@ -148,5 +164,6 @@ export {
 	doRetrieve,
 	doRevise,
 	doGetRelated,
-	doCreate
+	doCreate,
+	doRelate
 }
