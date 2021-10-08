@@ -10,8 +10,6 @@ const PostTitle = ({record}) => {
 }
 
 const WorkassignmentEdit = props => {
-	
-
 	return(
 		<Edit component="div" title={<PostTitle />} {...props}>
 			<FormWithRedirect
