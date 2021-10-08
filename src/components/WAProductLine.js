@@ -65,12 +65,11 @@ const WAProductLine = ({record, products, account}) => {
 		}
 		const assetResponse = await dataProvider.create('Assets', newAsset)
 		snInput.disabled = true
-		const relateResponse = await dataProvider.relate(
+		await dataProvider.relate(
 			record.id,
 			[assetResponse.data.id]
 		)
 		notify('msg.serial_saved', 'success')
-		// TO-DO: link asset to workassignmentline
 	}
 
 	return (
