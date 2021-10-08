@@ -4,7 +4,6 @@ import WAProductLine from './WAProductLine'
 import { useDataProvider } from 'ra-core'
 
 const WorkAssignmentContent = ({record}) => {
-	console.log(record)
 	const dataProvider = useDataProvider()
 	const topbarRef = useRef()
 	const [lines, setLines] = useState(false)
