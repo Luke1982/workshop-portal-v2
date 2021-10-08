@@ -104,6 +104,34 @@ const doGetRelated = async (relatedModName, params, sessionId, url) => {
 	return await doQuery(query, sessionId, url)
 }
 
+const doCreateOrRevise = async (type, modName, record, sessionId, url) => {
+	const response = await fetch(`
+			${url}/webservice.php
+			?operation=${type}
+			&sessionName=${sessionId}
+			${type === 'create' ? 'elementType=' + modName : ''}
+		`,
+		{
+			method: 'POST',
+			headers: {
+				"Content-type": 'application/x-www-form-urlencoded'
+			},
+			body: 'element=' + JSON.stringify(record)
+		}
+	)
+	try {
+		const result = await response.json()
+		if (result.success === true) {
+			return Promise.resolve(result.result)
+		} else {
+			return Promise.reject(result.error.code)
+		}
+	} catch(e) {
+		const operation = type === 'create' ? 'aanmaken' : 'updaten'
+		return Promise.reject(`Kon niet ${operation}`)
+	}
+}
+
 export {
 	doLogin,
 	doLogout,
