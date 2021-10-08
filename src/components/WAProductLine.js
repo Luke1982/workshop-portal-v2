@@ -42,18 +42,18 @@ const WAProductLine = ({record, products, account}) => {
 		const button = event.target
 		const column = button.parentElement.parentElement
 		const snInput = column.getElementsByTagName('input')[0]
-		const byInput = column.getElementsByTagName('input')[0]
+		const byInput = column.getElementsByTagName('input')[1]
 		const serialnumber = snInput.value
 		if (serialnumber === '') {
 			notify('msg.no_empty_serial', 'warning')
 			return
 		}
-		if (!/^[0-9]{4}$/.test(byInput.value) || byInput.value === '') {
+		if (!/^[0-9]{4}$/.test(byInput.value) || byInput.value.toString() === '') {
 			notify('msg.buildyear_wrong', 'warning')
 			return
 		}
 		button.disabled = true
-		const record = {
+		const newAsset = {
 			account,
 			serialnumber,
 			assetname: 'Tijdelijke naam',
@@ -63,8 +63,12 @@ const WAProductLine = ({record, products, account}) => {
 			assetstatus: 'In Gebruik',
 			cf_903: byInput.value
 		}
-		await dataProvider.create('Assets', record)
+		const assetResponse = await dataProvider.create('Assets', newAsset)
 		snInput.disabled = true
+		const relateResponse = await dataProvider.relate(
+			record.id,
+			[assetResponse.data.id]
+		)
 		notify('msg.serial_saved', 'success')
 		// TO-DO: link asset to workassignmentline
 	}

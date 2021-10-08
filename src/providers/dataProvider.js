@@ -6,7 +6,8 @@ import {
     doRetrieve,
     doRevise,
     doGetRelated,
-    doCreate
+    doCreate,
+    doRelate
 } from '../WSClient'
 import { authProvider } from './authProvider'
 
@@ -92,6 +93,14 @@ const dataProvider = (url) => {
         updateMany: (resource, params) => Promise,
         delete: (resource, params) => Promise,
         deleteMany: (resource, params) => Promise,
+        relate: async (sourceId, targetIds) => {
+            try {
+                const response = await doRelate(sourceId, targetIds, localStorage.getItem('cbsession'), url)
+                return Promise.resolve({data: response.status === 200})
+            } catch (e) {
+                return Promise.reject(e)
+            }
+        }
     }
 }
 
