@@ -105,7 +105,11 @@ const doGetRelated = async (relatedModName, params, sessionId, url) => {
 }
 
 const doCreate = async (modName, record, sessionId, url) => {
-	return await doCreateOrRevise('create', modName, record, sessionId, url)
+	try {
+		return await doCreateOrRevise('create', modName, record, sessionId, url)
+	} catch (e) {
+		console.error(e)
+	}
 }
 
 const doCreateOrRevise = async (type, modName, record, sessionId, url) => {
@@ -113,14 +117,13 @@ const doCreateOrRevise = async (type, modName, record, sessionId, url) => {
 			${url}/webservice.php
 			?operation=${type}
 			&sessionName=${sessionId}
-			${type === 'create' ? 'elementType=' + modName : ''}
 		`,
 		{
 			method: 'POST',
 			headers: {
 				"Content-type": 'application/x-www-form-urlencoded'
 			},
-			body: 'element=' + JSON.stringify(record)
+			body: 'element=' + JSON.stringify(record) + '&elementType=' + modName
 		}
 	)
 	try {
