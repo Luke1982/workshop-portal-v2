@@ -1,5 +1,5 @@
 import React from 'react'
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState } from 'react'
 import { useDataProvider, useNotify } from 'ra-core'
 
 const WAProductLine = ({record, products}) => {
