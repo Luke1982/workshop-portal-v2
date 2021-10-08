@@ -5,7 +5,8 @@ import {
     doGetMany,
     doRetrieve,
     doRevise,
-    doGetRelated
+    doGetRelated,
+    doCreate
 } from '../WSClient'
 import { authProvider } from './authProvider'
 
@@ -60,7 +61,20 @@ const dataProvider = (url) => {
                 return Promise.reject(e)
             }
         },
-        create: (resource, params) => Promise,
+        create: async (resource, params) => {
+            try {
+                const response = await doCreate(resource, params, localStorage.getItem('cbsession'), url)
+                return Promise.resolve(
+                    {
+                        data: {
+                            ...response
+                        }
+                    }
+                )
+            } catch (e) {
+                Promise.reject(e)
+            }
+        },
         update: async (resource, params) => {
             try {
                 const response = await doRevise(params, localStorage.getItem('cbsession'), url)
