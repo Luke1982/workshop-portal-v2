@@ -109,14 +109,14 @@ const WAProductLine = ({record, products, account}) => {
 					<div className="slds-form-element slds-size_8-of-12">
 						<div className="slds-grid">
 							<div className="slds-col slds-size_8-of-12">
-								<label className="slds-form-element__label" for={`serial-${record.id}`}>Serienummer</label>
+								<label className="slds-form-element__label" htmlFor={`serial-${record.id}`}>Serienummer</label>
 								<div className="slds-form-element__control">
 									{/* TO-DO: check if there isn't already an asset/serial for this input and disable if so */}
 									<input type="text" id={`serial-${record.id}`} placeholder="Voer het serienummer in" className="slds-input" />
 								</div>
 							</div>
 							<div className="slds-col slds-size_4-of-12 slds-m-left_xx-small">
-								<label className="slds-form-element__label" for={`buildyear-${record.id}`}>Bouwjaar</label>
+								<label className="slds-form-element__label" htmlFor={`buildyear-${record.id}`}>Bouwjaar</label>
 								<div className="slds-form-element__control">
 									{/* TO-DO: check if there isn't already an asset/serial for this input and disable if so */}
 									<input
