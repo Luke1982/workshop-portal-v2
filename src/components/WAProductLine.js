@@ -103,10 +103,12 @@ const WAProductLine = ({record, products}) => {
 					<div className="slds-form-element slds-size_8-of-12">
 						<label className="slds-form-element__label" for={`serial-${record.id}`}>Serienummer</label>
 						<div className="slds-form-element__control">
+							{/* TO-DO: check if there isn't already an asset/serial for this input and disable if so */}
 							<input type="text" id={`serial-${record.id}`} placeholder="Voer het serienummer in" className="slds-input" />
 						</div>
 					</div>
 					<div className="slds-size_4-of-12">
+						{/* TO-DO: check if there isn't already an asset/serial for this input and disable if so */}
 						<button
 							className="slds-button slds-button_brand slds-m-top_large slds-m-left_small"
 							onClick={(e) => {saveSerial(e)}}>Serienummer opslaan</button>
