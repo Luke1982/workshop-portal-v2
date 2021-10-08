@@ -1,5 +1,5 @@
 import React from 'react'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useDataProvider } from 'ra-core'
 
 const WAProductLine = ({record, products}) => {
@@ -48,33 +48,31 @@ const WAProductLine = ({record, products}) => {
 				</div>
 			</div>
 			<div className="slds-grid">
-				<div className="slds-col slds-size_1-of-5">
-					<div className="slds-text-title">Productnummer</div>
-					<div className="slds-text-body_regular">{product.product_no}</div>
-				</div>
-				<div className="slds-col slds-size_1-of-5">
-					<div className="slds-text-title">Artikelnummer</div>
-					<div className="slds-text-body_regular">{product.vendor_part_no}</div>
-				</div>
-				<div className="slds-col slds-size_1-of-5">
-					<div className="slds-text-title">Leverancier</div>
-					<div className="slds-text-body_regular">{vendor.vendorname}</div>
-				</div>
-				<div className="slds-col slds-size_1-of-5">
-					<div className="slds-text-title">Locatie</div>
-					<div className="slds-text-body_regular">{product.cf_940}</div>
-				</div>
-				<div className="slds-col slds-size_1-of-5">
-					<div className="slds-text-title">Aantal</div>
-					<div className="slds-text-body_regular">{record.qty}</div>
-				</div>
-			</div>
-			<div className="slds-grid slds-m-top_medium">
 				<div className="slds-col slds-size_8-of-12">
-					<div className="slds-text-title">Opmerkingen</div>
-					<div className="slds-text-body_regular">{record.description}</div>
+					<div className="slds-grid">
+						<div className="slds-col slds-size_1-of-5">
+							<div className="slds-text-title">Productnummer</div>
+							<div className="slds-text-body_regular">{product.product_no}</div>
+						</div>
+						<div className="slds-col slds-size_1-of-5">
+							<div className="slds-text-title">Artikelnummer</div>
+							<div className="slds-text-body_regular">{product.vendor_part_no}</div>
+						</div>
+						<div className="slds-col slds-size_1-of-5">
+							<div className="slds-text-title">Leverancier</div>
+							<div className="slds-text-body_regular">{vendor.vendorname}</div>
+						</div>
+						<div className="slds-col slds-size_1-of-5">
+							<div className="slds-text-title">Locatie</div>
+							<div className="slds-text-body_regular">{product.cf_940}</div>
+						</div>
+						<div className="slds-col slds-size_1-of-5">
+							<div className="slds-text-title">Aantal</div>
+							<div className="slds-text-body_regular">{record.qty}</div>
+						</div>
+					</div>
 				</div>
-				<div className="slds-size_4-of-12 slds-grid">
+				<div className="slds-col slds-size_4-of-12 slds-grid">
 					<div className="slds-form-element slds-size_8-of-12">
 						<label className="slds-form-element__label" for={`serial-${record.id}`}>Serienummer</label>
 						<div className="slds-form-element__control">
@@ -84,6 +82,12 @@ const WAProductLine = ({record, products}) => {
 					<div className="slds-size_4-of-12">
 						<button className="slds-button slds-button_brand slds-m-top_large slds-m-left_small">Serienummer opslaan</button>
 					</div>
+				</div>
+			</div>
+			<div className="slds-grid slds-m-top_x-small">
+				<div className="slds-col slds-size_1-of-1">
+					<div className="slds-text-title">Opmerkingen</div>
+					<div className="slds-text-body_regular">{record.description}</div>
 				</div>
 			</div>
 		</div>
