@@ -9,7 +9,9 @@ const customMessages = {
 	'resources.WorkAssignment.fields.enddate': 'Eindigt op',
 	'resources.WorkAssignment.fields.account_id': 'Klant',
 	'resources.WorkAssignment.fields.wastatus': 'Werkplaats status',
-	'Preparation successfully cancelled': 'Voorbereiding van de werkbon geannuleerd'
+	'Preparation successfully cancelled': 'Voorbereiding van de werkbon geannuleerd',
+	'msg.no_empty_serial': 'Serienummer kan niet leeg zijn',
+	'msg.serial_saved': 'Serienummer opgeslagen'
 }
 
 const stockProvider = polyglotI18nProvider(locale => dutchMessages)

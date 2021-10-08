@@ -1,9 +1,10 @@
 import React from 'react'
 import { useEffect, useState, useRef } from 'react'
-import { useDataProvider } from 'ra-core'
+import { useDataProvider, useNotify } from 'ra-core'
 
 const WAProductLine = ({record, products}) => {
 	const dataProvider = useDataProvider()
+	const notify = useNotify()
 	const [productsLoaded, setProductsLoaded] = useState(false)
 	const [product, setProduct] = useState({
 		productname: 'Laden...',
@@ -35,6 +36,32 @@ const WAProductLine = ({record, products}) => {
 
 	const markReady = id => {
 		console.log(id)
+	}
+
+	const saveSerial = async (event) => {
+		const button = event.target
+		const column = button.parentElement.parentElement
+		const snInput = column.getElementsByTagName('input')[0]
+		const serialnumber = snInput.value
+		if (serialnumber === '') {
+			notify('msg.no_empty_serial', 'warning')
+			return
+		}
+		button.disabled = true
+		const record = {
+			// TO-DO: set account
+			serialnumber,
+			assetname: 'Tijdelijke naam',
+			product: product.id,
+			dateinservice: '01-01-1900',
+			assigned_user_id: '19x6', // TO-DO: set global current user
+			assetstatus: 'In Gebruik',
+			cf_903: '2021', // TO-DO: create input for this
+		}
+		await dataProvider.create('Assets', record)
+		snInput.disabled = true
+		notify('msg.serial_saved', 'success')
+		// TO-DO: link asset to workassignmentline
 	}
 
 	return (
@@ -80,7 +107,9 @@ const WAProductLine = ({record, products}) => {
 						</div>
 					</div>
 					<div className="slds-size_4-of-12">
-						<button className="slds-button slds-button_brand slds-m-top_large slds-m-left_small">Serienummer opslaan</button>
+						<button
+							className="slds-button slds-button_brand slds-m-top_large slds-m-left_small"
+							onClick={(e) => {saveSerial(e)}}>Serienummer opslaan</button>
 					</div>
 				</div>
 			</div>
