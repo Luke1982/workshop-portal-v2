@@ -15,7 +15,8 @@ const customMessages = {
 	'msg.buildyear_wrong': 'Bouwjaar verkeerd ingevoerd',
 	'msg.invalid_date': 'Ongeldige datum, is er wel een datum ingesteld?',
 	'msg.cannot_close_wal_not_all_serials': 'Je kunt deze regel niet klaar melden, je hebt nog niet alle serienummers ingevuld',
-	'msg.closing_wal_succeeded': 'Gelukt, de regel is klaargezet'
+	'msg.closing_wal_succeeded': 'Gelukt, de regel is klaargezet',
+	'QUERY_SYNTAX_ERROR': 'Fout in query'
 }
 
 const stockProvider = polyglotI18nProvider(locale => dutchMessages)

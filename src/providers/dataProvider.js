@@ -43,10 +43,14 @@ const dataProvider = (url) => {
             return Promise.resolve({data: record.result})
         },
         getMany: async (resource, params) => {
-            const records = await doGetMany(params.ids, resource, localStorage.getItem('cbsession'), url)
-            return Promise.resolve(
-                {data: records}
-            )
+            try {
+                const records = await doGetMany(params.ids, resource, localStorage.getItem('cbsession'), url)
+                return Promise.resolve(
+                    {data: records}
+                )
+            } catch (e) {
+                return Promise.reject(e)
+            }
         },
         getManyReference: async (resource, params) => {
             try {

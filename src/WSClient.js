@@ -63,7 +63,12 @@ const doGetList = async (describeObj, modName, offSet, perPage, url, sessionId, 
 const doGetMany = async (ids, modName, sessionId, url) => {
 	const q = `SELECT * FROM ${modName.toLowerCase()} WHERE id IN (${ids.join(',')})`
 	const result = await doQuery(q, sessionId, url)
-	return result.result
+	if (result.success) {
+		return result.result
+	} else {
+		console.error(`${result.error.code}: ${result.error.message}. Query was "${q}"`)
+		return Promise.reject(result.error.code)
+	}
 }
 
 const doRetrieve = async (id, sessionId, url) => {
