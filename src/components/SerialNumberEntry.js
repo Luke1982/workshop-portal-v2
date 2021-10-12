@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useNotify, useDataProvider } from 'ra-core'
 
-const SerialNumberEntry = ({record, product, account, assets, myIterationOnLine}) => {
+const SerialNumberEntry = ({record, product, account, assets, myIterationOnLine, pushToAssets}) => {
 	const notify = useNotify()
 	const dataProvider = useDataProvider()
 	const [asset, setAsset] = useState({
@@ -52,6 +52,7 @@ const SerialNumberEntry = ({record, product, account, assets, myIterationOnLine}
 			record.id,
 			[assetResponse.data.id]
 		)
+		pushToAssets(assetResponse.data)
 		notify('msg.serial_saved', 'success')
 	}
 

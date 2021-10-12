@@ -43,6 +43,7 @@ const WAProductLine = ({record, products, account}) => {
 						key={`asset-${record.id}-${i}`}
 						assets={assets}
 						myIterationOnLine={i}
+						pushToAssets={pushToAssets}
 					/>
 				)
 			}
@@ -92,7 +93,15 @@ const WAProductLine = ({record, products, account}) => {
 			notify('msg.closing_wal_succeeded', 'success')
 			setStatus(true)
 		}
+	}
 
+	const pushToAssets = asset => {
+		if (!assets) {
+			setAssets([asset])
+			return
+		}
+		assets.push(asset)
+		setAssets([...assets])
 	}
 
 	return (
