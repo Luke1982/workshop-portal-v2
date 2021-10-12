@@ -19,7 +19,7 @@ const WorkAssignmentContent = ({record}) => {
 
 	window.addEventListener('scroll', () => {
 		requestAnimationFrame(() => {
-			if (topbarRef.current !== undefined) {
+			if (topbarRef.current !== undefined && topbarRef.current !== null) {
 				topbarRef.current.style.transform = `translateY(${window.scrollY}px)`
 			}
 		})
