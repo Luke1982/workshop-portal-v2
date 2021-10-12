@@ -176,6 +176,22 @@ const doGetRelated = async (sourceMod, params, sessionId, url) => {
 	return response
 }
 
+const doGetUserInfo = async (sessionId, url) => {
+	const response = fetch(`
+			${url}
+			/webservice.php
+			?operation=getPortalUserInfo
+			&sessionName=${sessionId}
+		`, {
+			method: 'POST',
+			headers: {
+				"Content-type": 'application/x-www-form-urlencoded'
+			}
+		}
+	)
+	return response
+}
+
 export {
 	doLogin,
 	doLogout,
@@ -187,5 +203,6 @@ export {
 	doGetRelatedByReference,
 	doCreate,
 	doRelate,
-	doGetRelated
+	doGetRelated,
+	doGetUserInfo
 }
