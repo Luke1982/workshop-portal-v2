@@ -12,8 +12,7 @@ const LoadUserInfo = () => {
 			getUserInfo()
 		}
 	})
-
-	return <div>User info</div>
+	return <></>
 }
 
 export default LoadUserInfo
