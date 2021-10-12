@@ -1,10 +1,10 @@
 import React from 'react'
 import { useEffect, useState } from 'react'
-import { useDataProvider, useNotify } from 'ra-core'
+import { useDataProvider } from 'ra-core'
+import SerialNumberEntry from './SerialNumberEntry'
 
 const WAProductLine = ({record, products, account}) => {
 	const dataProvider = useDataProvider()
-	const notify = useNotify()
 	const [productsLoaded, setProductsLoaded] = useState(false)
 	const [product, setProduct] = useState({
 		productname: 'Laden...',
@@ -15,6 +15,32 @@ const WAProductLine = ({record, products, account}) => {
 	const [vendor, setVendor] = useState({
 		vendorname: 'Niet bekend'
 	})
+	const [assets, setAssets] = useState(false)
+	const [qty, setQty] = useState(0)
+	const [renderedSerialInputs, setRenderedSerialInputs] = useState([])
+
+	useEffect(() => {
+		if (record.qty !== undefined) {
+			setQty(Number(record.qty))
+		}
+	}, [record])
+
+	useEffect(() => {
+		const newSerialInputs = []
+		for (let i = 0; i < qty; i++) {
+			newSerialInputs.push(
+				<SerialNumberEntry
+					record={record}
+					product={product}
+					account={account}
+					key={`asset-${record.id}-${i}`}
+					assets={assets}
+					myIterationOnLine={i}
+				/>
+			)
+		}
+		setRenderedSerialInputs(newSerialInputs)
+	}, [qty, record, product, account, assets])
 
 	useEffect(() => {
 		if (!!products) {
@@ -32,44 +58,20 @@ const WAProductLine = ({record, products, account}) => {
 			}
 			getVendor()
 		}
-	}, [productsLoaded, dataProvider, product.vendor_id])
+		if (productsLoaded === true) {
+			const getAssets = async () => {
+				const retrievedAssets = await dataProvider.getRelated('WorkAssignmentLines', {
+					id: record.id,
+					target: 'Assets'
+				})
+				setAssets(retrievedAssets.data.result.records)
+			}
+			getAssets()
+		}
+	}, [productsLoaded, dataProvider, product.vendor_id, record.id])
 
 	const markReady = id => {
 		console.log(id)
-	}
-
-	const saveSerial = async (event) => {
-		const button = event.target
-		const column = button.parentElement.parentElement
-		const snInput = column.getElementsByTagName('input')[0]
-		const byInput = column.getElementsByTagName('input')[1]
-		const serialnumber = snInput.value
-		if (serialnumber === '') {
-			notify('msg.no_empty_serial', 'warning')
-			return
-		}
-		if (!/^[0-9]{4}$/.test(byInput.value) || byInput.value.toString() === '') {
-			notify('msg.buildyear_wrong', 'warning')
-			return
-		}
-		button.disabled = true
-		const newAsset = {
-			account,
-			serialnumber,
-			assetname: 'Tijdelijke naam',
-			product: product.id,
-			dateinservice: '01-01-1900',
-			assigned_user_id: localStorage.getItem('cbuserid'),
-			assetstatus: 'In Gebruik',
-			cf_903: byInput.value
-		}
-		const assetResponse = await dataProvider.create('Assets', newAsset)
-		snInput.disabled = true
-		await dataProvider.relate(
-			record.id,
-			[assetResponse.data.id]
-		)
-		notify('msg.serial_saved', 'success')
 	}
 
 	return (
@@ -107,36 +109,8 @@ const WAProductLine = ({record, products, account}) => {
 						</div>
 					</div>
 				</div>
-				<div className="slds-col slds-size_4-of-12 slds-grid">
-					<div className="slds-form-element slds-size_8-of-12">
-						<div className="slds-grid">
-							<div className="slds-col slds-size_8-of-12">
-								<label className="slds-form-element__label" htmlFor={`serial-${record.id}`}>Serienummer</label>
-								<div className="slds-form-element__control">
-									{/* TO-DO: check if there isn't already an asset/serial for this input and disable if so */}
-									<input type="text" id={`serial-${record.id}`} placeholder="Voer het serienummer in" className="slds-input" />
-								</div>
-							</div>
-							<div className="slds-col slds-size_4-of-12 slds-m-left_xx-small">
-								<label className="slds-form-element__label" htmlFor={`buildyear-${record.id}`}>Bouwjaar</label>
-								<div className="slds-form-element__control">
-									{/* TO-DO: check if there isn't already an asset/serial for this input and disable if so */}
-									<input
-										type="text"
-										id={`buildyear-${record.id}`}
-										placeholder="Voer het bouwjaar in"
-										className="slds-input"
-									/>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div className="slds-size_4-of-12">
-						{/* TO-DO: check if there isn't already an asset/serial for this input and disable if so */}
-						<button
-							className="slds-button slds-button_brand slds-m-top_large slds-m-left_small"
-							onClick={(e) => {saveSerial(e)}}>Serienummer opslaan</button>
-					</div>
+				<div className="slds-col slds-size_4-of-12 slds-grid slds-wrap">
+					{renderedSerialInputs}
 				</div>
 			</div>
 			<div className="slds-grid slds-m-top_x-small">
