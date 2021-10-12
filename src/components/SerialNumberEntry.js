@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { useNotify, useDataProvider } from 'ra-core'
-import { updateTypeAssertion } from 'typescript'
 
 const SerialNumberEntry = ({record, product, account, assets, myIterationOnLine}) => {
 	const notify = useNotify()
