@@ -12,7 +12,8 @@ const customMessages = {
 	'Preparation successfully cancelled': 'Voorbereiding van de werkbon geannuleerd',
 	'msg.no_empty_serial': 'Serienummer kan niet leeg zijn',
 	'msg.serial_saved': 'Serienummer opgeslagen',
-	'msg.buildyear_wrong': 'Bouwjaar verkeerd ingevoerd'
+	'msg.buildyear_wrong': 'Bouwjaar verkeerd ingevoerd',
+	'msg.invalid_date': 'Ongeldige datum, is er wel een datum ingesteld?'
 }
 
 const stockProvider = polyglotI18nProvider(locale => dutchMessages)

@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import { useDataProvider, useNotify } from 'ra-core'
+import { i18nProvider } from '../providers/i18nProvider'
 import { Link } from 'react-router-dom'
 
 const WATimelineItem = ({ item }) => {
@@ -13,11 +14,14 @@ const WATimelineItem = ({ item }) => {
 	})
 
 	const formatDate = date => {
+		if (date.toString() === 'Invalid Date') {
+			return i18nProvider.translate('msg.invalid_date')
+		}
 		return `
 			<b>${date.toLocaleString('nl-NL', {weekday: 'long'})}</b><br />
+			${date.getDate() < 10 ? '0' : ''}${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()} |
 			${date.getHours() < 10 ? '0' : ''}${date.getHours()}:
-			${date.getMinutes() < 10 ? '0' : ''}${date.getMinutes()} | 
-			${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}
+			${date.getMinutes() < 10 ? '0' : ''}${date.getMinutes()}
 		`
 	}
 
