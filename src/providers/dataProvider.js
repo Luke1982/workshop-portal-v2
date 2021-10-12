@@ -5,9 +5,10 @@ import {
     doGetMany,
     doRetrieve,
     doRevise,
-    doGetRelated,
+    doGetRelatedByReference,
     doCreate,
-    doRelate
+    doRelate,
+    doGetRelated
 } from '../WSClient'
 import { authProvider } from './authProvider'
 
@@ -48,7 +49,7 @@ const dataProvider = (url) => {
         },
         getManyReference: async (resource, params) => {
             try {
-                const result = await doGetRelated(
+                const result = await doGetRelatedByReference(
                     resource,
                     params,
                     localStorage.getItem('cbsession'),
@@ -97,6 +98,14 @@ const dataProvider = (url) => {
             try {
                 const response = await doRelate(sourceId, targetIds, localStorage.getItem('cbsession'), url)
                 return Promise.resolve({data: response.status === 200})
+            } catch (e) {
+                return Promise.reject(e)
+            }
+        },
+        getRelated: async (resource, params) => {
+            try {
+                const response = await doGetRelated(resource, params, localStorage.getItem('cbsession'), url)
+                return Promise.resolve({data: response})
             } catch (e) {
                 return Promise.reject(e)
             }

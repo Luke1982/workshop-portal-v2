@@ -97,7 +97,7 @@ const doRevise = async (record, sessionId, url) => {
 	}
 }
 
-const doGetRelated = async (relatedModName, params, sessionId, url) => {
+const doGetRelatedByReference = async (relatedModName, params, sessionId, url) => {
 	const query = `SELECT * FROM ${relatedModName} 
 		WHERE ${params.target} = ${params.id} 
 		ORDER BY ${params.sort.field} ${params.sort.order}`
@@ -155,6 +155,24 @@ const doRelate = async (sourceId, targetIds, sessionId, url) => {
 	return response
 }
 
+const doGetRelated = async (sourceMod, params, sessionId, url) => {
+	const response = await fetch(
+			`
+				${url}
+				/webservice.php
+				?operation=getRelatedRecords
+				&sessionName=${sessionId}
+				&id=${params.id}
+				&module=${sourceMod}
+				&relatedModule=${params.target}
+			`
+		)
+	if (response.status !== 200) {
+		return Promise.reject('msg.getrelated.failed')
+	}
+	return response
+}
+
 export {
 	doLogin,
 	doLogout,
@@ -163,7 +181,8 @@ export {
 	doGetMany,
 	doRetrieve,
 	doRevise,
-	doGetRelated,
+	doGetRelatedByReference,
 	doCreate,
-	doRelate
+	doRelate,
+	doGetRelated
 }
