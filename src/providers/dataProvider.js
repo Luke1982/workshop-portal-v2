@@ -105,7 +105,7 @@ const dataProvider = (url) => {
         getRelated: async (resource, params) => {
             try {
                 const response = await doGetRelated(resource, params, localStorage.getItem('cbsession'), url)
-                return Promise.resolve({data: response})
+                return Promise.resolve({data: await response.json()})
             } catch (e) {
                 return Promise.reject(e)
             }
