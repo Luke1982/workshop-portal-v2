@@ -1,10 +1,11 @@
 import React from 'react'
 import { useEffect, useState } from 'react'
-import { useDataProvider } from 'ra-core'
+import { useDataProvider, useNotify } from 'ra-core'
 import SerialNumberEntry from './SerialNumberEntry'
 
 const WAProductLine = ({record, products, account}) => {
 	const dataProvider = useDataProvider()
+	const notify = useNotify()
 	const [productsLoaded, setProductsLoaded] = useState(false)
 	const [product, setProduct] = useState({
 		productname: 'Laden...',
@@ -18,6 +19,11 @@ const WAProductLine = ({record, products, account}) => {
 	const [assets, setAssets] = useState(false)
 	const [qty, setQty] = useState(0)
 	const [renderedSerialInputs, setRenderedSerialInputs] = useState([])
+	const [status, setStatus] = useState(false)
+
+	useEffect(() => {
+		setStatus(record.workshopstatus === 'Ready for delivery')
+	}, [record.workshopstatus])
 
 	useEffect(() => {
 		if (record.qty !== undefined) {
@@ -72,8 +78,21 @@ const WAProductLine = ({record, products, account}) => {
 		}
 	}, [productsLoaded, dataProvider, product.vendor_id, record.id])
 
-	const markReady = id => {
-		console.log(id)
+	const markReady = async (id, button) => {
+		if (product.registable === '1' && assets.length < qty) {
+			notify('msg.cannot_close_wal_not_all_serials', 'error')
+			return
+		}
+		button.disabled = true
+		const response = await dataProvider.update('WorkAssignmentLines', {
+			id: record.id,
+			workshopstatus: 'Ready for delivery'
+		})
+		if (response.data.workshopstatus === 'Ready for delivery') {
+			notify('msg.closing_wal_succeeded', 'success')
+			setStatus(true)
+		}
+
 	}
 
 	return (
@@ -83,7 +102,20 @@ const WAProductLine = ({record, products, account}) => {
 					<div className="slds-text-heading_medium">{product.productname}</div>
 				</div>
 				<div className="slds-col">
-					<button className="slds-button slds-button_success slds-float_right" onClick={() => {markReady(record.id)}}>Klaar</button>
+					<button
+						className="slds-float_right slds-button slds-button_success slds-float_right slds-m-left_xx-small"
+						onClick={(e) => {markReady(record.id, e.target)}}
+						disabled={status}
+					>
+						Klaar
+					</button>
+					{status &&
+						<span className="slds-float_right slds-icon_container slds-icon-action-approval slds-icon_container_circle">
+							<svg className="slds-icon slds-icon_xx-small">
+								<use xlinkHref="/icons/action-sprite/svg/symbols.svg#approval"></use>
+							</svg>
+						</span>
+					}
 				</div>
 			</div>
 			<div className="slds-grid">

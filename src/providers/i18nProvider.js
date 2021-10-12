@@ -13,7 +13,9 @@ const customMessages = {
 	'msg.no_empty_serial': 'Serienummer kan niet leeg zijn',
 	'msg.serial_saved': 'Serienummer opgeslagen',
 	'msg.buildyear_wrong': 'Bouwjaar verkeerd ingevoerd',
-	'msg.invalid_date': 'Ongeldige datum, is er wel een datum ingesteld?'
+	'msg.invalid_date': 'Ongeldige datum, is er wel een datum ingesteld?',
+	'msg.cannot_close_wal_not_all_serials': 'Je kunt deze regel niet klaar melden, je hebt nog niet alle serienummers ingevuld',
+	'msg.closing_wal_succeeded': 'Gelukt, de regel is klaargezet'
 }
 
 const stockProvider = polyglotI18nProvider(locale => dutchMessages)
