@@ -162,10 +162,13 @@ const doGetRelated = async (sourceMod, params, sessionId, url) => {
 				/webservice.php
 				?operation=getRelatedRecords
 				&sessionName=${sessionId}
-				&id=${params.id}
-				&module=${sourceMod}
-				&relatedModule=${params.target}
-			`
+			`,{
+				method: 'POST',
+				headers: {
+					"Content-type": 'application/x-www-form-urlencoded'
+				},
+				body: `id=${params.id}&module=${sourceMod}&relatedModule=${params.target}`
+			}
 		)
 	if (response.status !== 200) {
 		return Promise.reject('msg.getrelated.failed')
