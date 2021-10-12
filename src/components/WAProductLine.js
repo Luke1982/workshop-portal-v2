@@ -26,20 +26,22 @@ const WAProductLine = ({record, products, account}) => {
 	}, [record])
 
 	useEffect(() => {
-		const newSerialInputs = []
-		for (let i = 0; i < qty; i++) {
-			newSerialInputs.push(
-				<SerialNumberEntry
-					record={record}
-					product={product}
-					account={account}
-					key={`asset-${record.id}-${i}`}
-					assets={assets}
-					myIterationOnLine={i}
-				/>
-			)
+		if (product.registable === '1') {
+			const newSerialInputs = []
+			for (let i = 0; i < qty; i++) {
+				newSerialInputs.push(
+					<SerialNumberEntry
+						record={record}
+						product={product}
+						account={account}
+						key={`asset-${record.id}-${i}`}
+						assets={assets}
+						myIterationOnLine={i}
+					/>
+				)
+			}
+			setRenderedSerialInputs(newSerialInputs)
 		}
-		setRenderedSerialInputs(newSerialInputs)
 	}, [qty, record, product, account, assets])
 
 	useEffect(() => {
