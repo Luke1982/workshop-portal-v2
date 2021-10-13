@@ -21,6 +21,11 @@ const WorkAssignmentContent = ({record}) => {
 		requestAnimationFrame(() => {
 			if (topbarRef.current !== undefined && topbarRef.current !== null) {
 				topbarRef.current.style.transform = `translateY(${window.scrollY}px)`
+				if (window.scrollY > 0) {
+					topbarRef.current.style.boxShadow = `0px 10px 40px -20px rgba(0,0,0,0.75)`
+				} else {
+					topbarRef.current.style.boxShadow = `none`
+				}
 			}
 		})
 	})
@@ -74,8 +79,22 @@ const WorkAssignmentContent = ({record}) => {
 
 	return (
 		<>
-			<div className="slds-grid slds-box slds-theme_shade slds-theme_alert-texture" ref={topbarRef}>
-				<div className="slds-col">
+			<div 
+				className="slds-grid slds-box slds-theme_shade slds-theme_alert-texture"
+				ref={topbarRef}
+				style={{
+					position: 'relative',
+					zIndex: 2,
+					transition: 'box-shadow 100ms ease'
+				}}
+			>
+				<div
+					className="slds-col"
+					style={{
+						position: 'relative',
+						zIndex: 1
+					}}
+				>
 					<b>Werbon nummer:</b> {record.workassignment_no}
 				</div>
 				<div className="slds-col">
