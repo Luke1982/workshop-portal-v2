@@ -131,7 +131,7 @@ const WorkAssignmentContent = ({record}) => {
 				</div>
 				<div
 					className="slds-col"
-					dangerouslySetInnerHTML={{__html: `<b>Uiterlijk klaar op:</b>${formatDate(new Date(record.workshop_enddate))}`}}>
+					dangerouslySetInnerHTML={{__html: `<b>Uiterlijk klaar op:</b> ${formatDate(new Date(record.workshop_enddate))}`}}>
 				</div>
 			</div>
 			<div className="slds-box slds-m-top_small">
