@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import { useDataProvider } from 'ra-core'
 import SerialNumberEntry from './SerialNumberEntry'
+import NumberFormat from 'react-number-format'
 
 const WALProductLine = ({product, walLine, assets, type, qty, account, pushToAssets, isFirst}) => {
 	const dataProvider = useDataProvider()
@@ -41,7 +42,7 @@ const WALProductLine = ({product, walLine, assets, type, qty, account, pushToAss
 	}, [qty, walLine, product, account, assets, pushToAssets, isFirst])
 
 	return (
-		<div className="slds-grid">
+		<div className="slds-grid slds-m-top_small">
 			<div className="slds-col slds-size_8-of-12">
 				<div className="slds-grid">
 					<div className="slds-col slds-size_1-of-5">
@@ -51,30 +52,43 @@ const WALProductLine = ({product, walLine, assets, type, qty, account, pushToAss
 								{type === 'main' && 'Productnummer'}
 							</div>
 						}
-						<div className="slds-text-body_regular slds-m-top_xx-small">
+						<div className="slds-text-body_regular slds-m-top_xx-small" style={{borderTop: '1px solid #d1d1d1'}}>
 							{type === 'sub' && `${product.productname} (${product.product_no})`}
 							{type === 'main' && `${product.product_no}`}
 						</div>
 					</div>
 					<div className="slds-col slds-size_1-of-5">
 						{isFirst && <div className="slds-text-title">Artikelnummer</div>}
-						<div className="slds-text-body_regular slds-m-top_xx-small">{product.vendor_part_no}</div>
+						<div className="slds-text-body_regular slds-m-top_xx-small" style={{borderTop: '1px solid #d1d1d1'}}>
+							{product.vendor_part_no}
+						</div>
 					</div>
 					<div className="slds-col slds-size_1-of-5">
 						{isFirst && <div className="slds-text-title">Leverancier</div>}
-						<div className="slds-text-body_regular slds-m-top_xx-small">{vendor.vendorname}</div>
+						<div className="slds-text-body_regular slds-m-top_xx-small" style={{borderTop: '1px solid #d1d1d1'}}>
+							{vendor.vendorname}
+						</div>
 					</div>
 					<div className="slds-col slds-size_1-of-5">
 						{isFirst && <div className="slds-text-title">Locatie</div>}
-						<div className="slds-text-body_regular slds-m-top_xx-small">{product.cf_940}</div>
+						<div className="slds-text-body_regular slds-m-top_xx-small" style={{borderTop: '1px solid #d1d1d1'}}>
+							{product.cf_940}
+						</div>
 					</div>
 					<div className="slds-col slds-size_1-of-5">
 						{isFirst && <div className="slds-text-title">Aantal</div>}
-						<div className="slds-text-body_regular slds-m-top_xx-small">{qty}</div>
+						<div className="slds-text-body_regular slds-m-top_xx-small" style={{borderTop: '1px solid #d1d1d1'}}>
+							<NumberFormat
+								thousandSeparator='.'
+								decimalSeparator=','
+								value={Number(qty)}
+								displayType='text'
+							/>
+						</div>
 					</div>
 				</div>
 			</div>
-			<div className="slds-col slds-size_4-of-12 slds-grid slds-wrap">
+			<div className={`slds-col slds-size_4-of-12 slds-grid slds-wrap${renderedSerialInputs.length > 0 ? ' slds-box slds-box_x-small slds-grid' : ''}`}>
 				{renderedSerialInputs}
 			</div>
 		</div>

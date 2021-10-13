@@ -72,7 +72,7 @@ const SerialNumberEntry = ({record, product, account, assets, myIterationOnLine,
 
 	return (
 		<>
-			<div className="slds-form-element slds-size_8-of-12 slds-m-bottom_xx-small">
+			<div className="slds-form-element slds-size_7-of-12 slds-m-bottom_xx-small">
 				<div className="slds-grid">
 					<div className="slds-col slds-size_8-of-12">
 						{(myIterationOnLine === 0 && showTitle !== true) &&
@@ -94,7 +94,7 @@ const SerialNumberEntry = ({record, product, account, assets, myIterationOnLine,
 						{(myIterationOnLine === 0 && showTitle !== true) &&
 							<label className="slds-form-element__label" htmlFor={`buildyear-${record.id}`}>Bouwjaar</label>
 						}
-						<div className="slds-form-element__control">
+						<div className="slds-form-element__control" >
 							<input
 								type="text"
 								id={`buildyear-${record.id}`}
@@ -108,7 +108,7 @@ const SerialNumberEntry = ({record, product, account, assets, myIterationOnLine,
 					</div>
 				</div>
 			</div>
-			<div className="slds-size_4-of-12">
+			<div className="slds-size_5-of-12">
 				<button
 					className={`slds-button slds-button_brand${(myIterationOnLine === 0 && showTitle !== true) ? ' slds-m-top_large' : ''} slds-m-left_small`}
 					onClick={(e) => {saveSerial(e)}}
