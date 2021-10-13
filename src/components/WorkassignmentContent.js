@@ -1,6 +1,6 @@
 import React, {useRef, useState, useEffect} from 'react'
 import {Spinner} from '@salesforce/design-system-react'
-import WAProductLine from './WAProductLine'
+import WALine from './WALine'
 import { useDataProvider } from 'ra-core'
 
 const WorkAssignmentContent = ({record}) => {
@@ -47,13 +47,13 @@ const WorkAssignmentContent = ({record}) => {
 			const collectedProductIds = []
 			const renderedLines = lines.map(line => {
 				collectedProductIds.push(line.product)
-				return <WAProductLine record={line} key={line.id} products={products} account={record.account_id} />
+				return <WALine record={line} key={line.id} products={products} account={record.account_id} />
 			})
 			setProductIds(collectedProductIds)
 			setRenderedLines(renderedLines)
 		} else if (productsLoaded === true) {
 			const renderedLines = lines.map(line => {
-				return <WAProductLine record={line} key={line.id} products={products} account={record.account_id} />
+				return <WALine record={line} key={line.id} products={products} account={record.account_id} />
 			})
 			setRenderedLines(renderedLines)
 		}

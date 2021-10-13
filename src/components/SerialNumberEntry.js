@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { useNotify, useDataProvider } from 'ra-core'
 
-const SerialNumberEntry = ({record, product, account, assets, myIterationOnLine, pushToAssets}) => {
+const SerialNumberEntry = ({record, product, account, assets, myIterationOnLine, pushToAssets, showTitle}) => {
 	const notify = useNotify()
 	const dataProvider = useDataProvider()
+	const [filteredAssets, setFilteredAssets] = useState(false)
 	const [asset, setAsset] = useState({
 		serial: '',
 		buildyear: '',
@@ -11,14 +12,21 @@ const SerialNumberEntry = ({record, product, account, assets, myIterationOnLine,
 	})
 
 	useEffect(() => {
-		if (assets[myIterationOnLine] !== undefined) {
+		if (!!assets) {
+			const tempFilteredAssets = assets.filter(a => a.product === product.id)
+			setFilteredAssets(tempFilteredAssets.length === 0 ? false : tempFilteredAssets)
+		}
+	}, [assets, product])
+
+	useEffect(() => {
+		if (filteredAssets[myIterationOnLine] !== undefined) {
 			setAsset({
-				serial: assets[myIterationOnLine].serialnumber,
-				buildyear: assets[myIterationOnLine].cf_903,
+				serial: filteredAssets[myIterationOnLine].serialnumber,
+				buildyear: filteredAssets[myIterationOnLine].cf_903,
 				present: true
 			})
 		}
-	}, [assets, myIterationOnLine])
+	}, [filteredAssets, myIterationOnLine])
 
 	const saveSerial = async (event) => {
 		const button = event.target
@@ -67,11 +75,10 @@ const SerialNumberEntry = ({record, product, account, assets, myIterationOnLine,
 			<div className="slds-form-element slds-size_8-of-12 slds-m-bottom_xx-small">
 				<div className="slds-grid">
 					<div className="slds-col slds-size_8-of-12">
-						{myIterationOnLine === 0 &&
+						{(myIterationOnLine === 0 && showTitle !== true) &&
 							<label className="slds-form-element__label" htmlFor={`serial-${record.id}`}>Serienummer</label>
 						}
 						<div className="slds-form-element__control">
-							{/* TO-DO: check if there isn't already an asset/serial for this input and disable if so */}
 							<input
 								type="text"
 								id={`serial-${record.id}`}
@@ -84,11 +91,10 @@ const SerialNumberEntry = ({record, product, account, assets, myIterationOnLine,
 						</div>
 					</div>
 					<div className="slds-col slds-size_4-of-12 slds-m-left_xx-small">
-						{myIterationOnLine === 0 &&
+						{(myIterationOnLine === 0 && showTitle !== true) &&
 							<label className="slds-form-element__label" htmlFor={`buildyear-${record.id}`}>Bouwjaar</label>
 						}
 						<div className="slds-form-element__control">
-							{/* TO-DO: check if there isn't already an asset/serial for this input and disable if so */}
 							<input
 								type="text"
 								id={`buildyear-${record.id}`}
@@ -103,9 +109,8 @@ const SerialNumberEntry = ({record, product, account, assets, myIterationOnLine,
 				</div>
 			</div>
 			<div className="slds-size_4-of-12">
-				{/* TO-DO: check if there isn't already an asset/serial for this input and disable if so */}
 				<button
-					className={`slds-button slds-button_brand${myIterationOnLine === 0 ? ' slds-m-top_large' : ''} slds-m-left_small`}
+					className={`slds-button slds-button_brand${(myIterationOnLine === 0 && showTitle !== true) ? ' slds-m-top_large' : ''} slds-m-left_small`}
 					onClick={(e) => {saveSerial(e)}}
 					disabled={asset.present}
 				>
