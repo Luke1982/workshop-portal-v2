@@ -2,6 +2,7 @@ import React, {useRef, useState, useEffect} from 'react'
 import {Spinner} from '@salesforce/design-system-react'
 import WALine from './WALine'
 import { useDataProvider } from 'ra-core'
+import { i18nProvider } from '../providers/i18nProvider'
 
 const WorkAssignmentContent = ({record}) => {
 	const dataProvider = useDataProvider()
@@ -23,8 +24,10 @@ const WorkAssignmentContent = ({record}) => {
 				topbarRef.current.style.transform = `translateY(${window.scrollY}px)`
 				if (window.scrollY > 0) {
 					topbarRef.current.style.boxShadow = `0px 10px 40px -20px rgba(0,0,0,0.75)`
+					topbarRef.current.style.marginTop = `-1.2rem`
 				} else {
 					topbarRef.current.style.boxShadow = `none`
+					topbarRef.current.style.marginTop = `0`
 				}
 			}
 		})
@@ -77,15 +80,27 @@ const WorkAssignmentContent = ({record}) => {
 		}
 	}, [productIds, dataProvider])
 
+	const formatDate = date => {
+		if (date.toString() === 'Invalid Date') {
+			return i18nProvider.translate('msg.invalid_date')
+		}
+		return `
+			${date.toLocaleString('nl-NL', {weekday: 'long'})}
+			${date.getDate() < 10 ? '0' : ''}${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()} om
+			${date.getHours() < 10 ? '0' : ''}${date.getHours()}:
+			${date.getMinutes() < 10 ? '0' : ''}${date.getMinutes()}
+		`
+	}
+
 	return (
 		<>
 			<div 
-				className="slds-grid slds-box slds-theme_shade slds-theme_alert-texture"
+				className="slds-grid slds-box slds-theme_warning slds-theme_alert-texture"
 				ref={topbarRef}
 				style={{
 					position: 'relative',
 					zIndex: 2,
-					transition: 'box-shadow 100ms ease'
+					transition: 'box-shadow 100ms ease, margin 100ms ease'
 				}}
 			>
 				<div
@@ -101,10 +116,11 @@ const WorkAssignmentContent = ({record}) => {
 					<b>Ordernummer:</b>
 				</div>
 				<div className="slds-col">
-					<b>Klant:</b>
+					<b>Klant:</b> {record.account_idename.reference || 'Onbekend'}
 				</div>
-				<div className="slds-col">
-					<b>Uiterlijk klaar op:</b>
+				<div
+					className="slds-col"
+					dangerouslySetInnerHTML={{__html: `<b>Uiterlijk klaar op:</b>${formatDate(new Date(record.workshop_enddate))}`}}>
 				</div>
 			</div>
 			<div className="slds-box slds-m-top_small">
