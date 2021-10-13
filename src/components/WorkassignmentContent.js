@@ -11,6 +11,7 @@ const WorkAssignmentContent = ({record}) => {
 	const [products, setProducts] = useState(false)
 	const [productIds, setProductIds] = useState(false)
 	const [productsLoaded, setProductsLoaded] = useState(false)
+	const [salesorder, setSalesorder] = useState(false)
 	const [renderedLines, setRenderedLines] = useState([<Spinner
 		key="spinner"
 		variant="brand"
@@ -46,6 +47,16 @@ const WorkAssignmentContent = ({record}) => {
 				}
 			)
 			setLines(result.data)
+			
+			if (!salesorder) {
+				const getSalesorder = async () => {
+					const result = await dataProvider.getOne('SalesOrder', {
+						id: record.salesorder
+					})
+					setSalesorder(result.data)
+				}
+				getSalesorder()
+			}
 		}
 		getLines()
 	}, [dataProvider, record.id])
@@ -113,10 +124,10 @@ const WorkAssignmentContent = ({record}) => {
 					<b>Werbon nummer:</b> {record.workassignment_no}
 				</div>
 				<div className="slds-col">
-					<b>Ordernummer:</b>
+					<b>Ordernummer:</b> {salesorder === false ? 'Laden...' : salesorder.salesorder_no}
 				</div>
 				<div className="slds-col">
-					<b>Klant:</b> {record.account_idename.reference || 'Onbekend'}
+					<b>Klant:</b> {record.account_idename === undefined ? 'Laden...' :record.account_idename.reference}
 				</div>
 				<div
 					className="slds-col"
